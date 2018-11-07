@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: shopping-turbine
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: shopping-turbine
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+server:
+  port: 8765
+
+turbine:
+  app-config: shopping-product-description,shopping-product-server,shopping-product-deal
+  aggregator:
+    clusterConfig: default
+  clusterNameExpression: new String("default")
+  combine-host: true
+  instanceUrlSuffix:
+    default: actuator/hystrix.stream
+
+

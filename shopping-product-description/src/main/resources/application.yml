@@ -1,0 +1,26 @@
+#eureka:
+#  client:
+#    healthcheck:
+#      enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    hystrix:
+      stream:
+        enabled: true
+hystrix:
+  shareSecurityContext: true
+#spring:
+#  security:
+#    user:
+#      name: admin
+#      password: 123456
+#      roles: TEST_ROLES
+
+
+

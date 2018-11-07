@@ -1,0 +1,23 @@
+server:
+  port: 8764
+spring:
+  application:
+    name: product-server
+
+
+management:
+    shutdown:
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: product-server
+    prefer-ip-address: true
