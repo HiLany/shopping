@@ -5,6 +5,11 @@ package com.lanyang.web.services;
  */
 public interface ProductDescriptionService {
 
+    /**
+     * 根据名称查询该产品描述
+     * @param name
+     * @return
+     */
     String SearchByDescription(String name);
 
 }

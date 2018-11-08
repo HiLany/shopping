@@ -2,7 +2,7 @@ server:
   port: 8764
 spring:
   application:
-    name: product-server
+    name: shopping-product-server
 
 
 management:
@@ -19,5 +19,5 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
-    hostname: product-server
+    hostname: shopping-product-server
     prefer-ip-address: true

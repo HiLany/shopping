@@ -1,0 +1,32 @@
+server:
+  port: 8765
+spring:
+  application:
+    name: shopping-product-deal
+management:
+    shutdown:
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: shopping-product-deal
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+feign:
+  hystrix:
+    enabled: true # 开启feign hystrix 服务
+hystrix:
+  command:
+    shopping-product-server:
+       execution:
+         isolation:
+           thread:
+             timeoutInMilliseconds: 5000 # 配置hystrix command熔断服务的超时时间
+

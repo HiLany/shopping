@@ -21,7 +21,7 @@ management:
         allowed-origins: "*"
         allowed-methods: "*"
 server:
-  port: 8765
+  port: 8769
 
 turbine:
   app-config: shopping-product-description,shopping-product-server,shopping-product-deal

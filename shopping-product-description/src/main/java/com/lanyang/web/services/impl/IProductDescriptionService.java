@@ -1,6 +1,10 @@
 package com.lanyang.web.services.impl;
 
+import com.lanyang.feignClientsForProductDescription.ProductServerFeignClient;
 import com.lanyang.web.services.ProductDescriptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class IProductDescriptionService implements ProductDescriptionService{
 
+    private Logger logger = LoggerFactory.getLogger(IProductDescriptionService.class);
+
     @Value("${server.port}")
     private String port;
 
+    @Autowired
+    private ProductServerFeignClient productServerFeignClient;
+
     @Override
     public String SearchByDescription(String name) {
-        return "hi " + name +", i am from port: " + port;
+        logger.info("SearchByDescription : {}" ,name);
+        return productServerFeignClient.SearchDetailByProduct(name);
     }
 }

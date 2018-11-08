@@ -1,20 +1,42 @@
-#eureka:
-#  client:
-#    healthcheck:
-#      enabled: true
+spring:
+  application:
+    name: shopping-product-description
+
+server:
+  port: 8762
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: shopping-product-description
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+feign:
+  hystrix:
+    enabled: true # 开启feign hystrix 服务
+
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
     shutdown:
-      enabled: true
-    hystrix:
-      stream:
-        enabled: true
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      web:
+        exposure:
+          include: "*"
 hystrix:
-  shareSecurityContext: true
+  command:
+    shopping-product-server:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+
+
+
 #spring:
 #  security:
 #    user:
