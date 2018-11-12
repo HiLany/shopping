@@ -1,0 +1,21 @@
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: shopping-zuul
+    prefer-ip-address: true
+
+zuul:
+  routes:
+    deal:
+      path: /deal/**
+      serviceId: shopping-product-deal
+    description:
+      path: /description/**
+      serviceId: shopping-product-description
+    product-server:
+      path: /product-server/**
+      serviceId: shopping-product-server
