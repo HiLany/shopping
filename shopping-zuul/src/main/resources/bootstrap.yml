@@ -11,11 +11,11 @@ eureka:
 zuul:
   routes:
     deal:
-      path: /deal/**
+      path: /deals/**
       serviceId: shopping-product-deal
     description:
-      path: /description/**
+      path: /descriptions/**
       serviceId: shopping-product-description
     product-server:
-      path: /product-server/**
+      path: /product-servers/**
       serviceId: shopping-product-server
