@@ -19,7 +19,7 @@ public class IProductService implements ProductService{
         logger.info("SearchStorageByProduct: {}",productName);
         boolean flag = false;
         try {
-            Thread.sleep(2000L);
+//            Thread.sleep(2000L);
             int nums = (int)(Math.random()*100);
             if(nums > 40){
                 flag = true;
@@ -35,7 +35,7 @@ public class IProductService implements ProductService{
 
     @Override
     public String SearchDetailByProduct(String productName) throws InterruptedException{
-        Thread.sleep(2000L);
+//        Thread.sleep(2000L);
         return "ProductName :"+productName + " Category: Fruit , Description: 'so delicious!'";
     }
 
