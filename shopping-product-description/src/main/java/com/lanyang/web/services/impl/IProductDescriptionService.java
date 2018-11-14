@@ -23,6 +23,11 @@ public class IProductDescriptionService implements ProductDescriptionService{
     private ProductServerFeignClient productServerFeignClient;
 
     @Override
+    public String SearchPort(){
+        return "Hi, This Service Port is "+port;
+    }
+
+    @Override
     public String SearchByDescription(String name) {
         logger.info("SearchByDescription : {}" ,name);
         return productServerFeignClient.SearchDetailByProduct(name);

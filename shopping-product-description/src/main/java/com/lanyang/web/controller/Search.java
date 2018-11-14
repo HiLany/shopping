@@ -17,13 +17,8 @@ public class Search {
     private ProductDescriptionService productDescriptionService;
 
     @RequestMapping(value = "hi",method = RequestMethod.GET)
-    /*@HystrixCommand(fallbackMethod = "homeError")*/
-    public String home(@RequestParam(value = "name",defaultValue = "lany") String name){
-        return productDescriptionService.SearchByDescription(name);
-    }
-
-    public String homeError(String name){
-        return "sorry, "+name+",an error raised!";
+    public String home(){
+        return productDescriptionService.SearchPort();
     }
 
     @RequestMapping(value = "/invokeFeignCommand",method = RequestMethod.GET)

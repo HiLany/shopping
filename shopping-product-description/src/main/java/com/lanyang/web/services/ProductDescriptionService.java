@@ -12,4 +12,10 @@ public interface ProductDescriptionService {
      */
     String SearchByDescription(String name);
 
+    /**
+     * 用于测试zuul网关功能
+     * @return
+     */
+    String SearchPort();
+
 }
