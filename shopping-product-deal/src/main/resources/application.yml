@@ -22,11 +22,22 @@ eureka:
 feign:
   hystrix:
     enabled: true # 开启feign hystrix 服务
+
+
+feign:
+  hystrix:
+    enabled: true # 开启feign hystrix 服务
+  client:
+    config:
+      default:
+        connectTimeout: 5000 # 设置feign客户端连接请求超时时间
+        readTimeout: 5000 # 设置feign客户端连接的访问时间,如果连接时间过小，那么会触发熔断以及降级服务。
+        loggerLevel: basic
+
 hystrix:
   command:
     shopping-product-server:
        execution:
          isolation:
            thread:
-             timeoutInMilliseconds: 5000 # 配置hystrix command熔断服务的超时时间
-
+             timeoutInMilliseconds: 4000 # 配置hystrix command熔断服务的超时时间
