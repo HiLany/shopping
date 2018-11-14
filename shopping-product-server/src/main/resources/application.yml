@@ -1,6 +1,11 @@
 server:
   port: 8764
 spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#      roles: TEST_ROLES
   application:
     name: shopping-product-server
 
