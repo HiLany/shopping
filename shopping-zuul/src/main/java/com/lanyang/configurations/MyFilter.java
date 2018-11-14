@@ -65,7 +65,7 @@ public class MyFilter extends ZuulFilter {
         if(accessToken == null){
             logger.warn("The token is null");
             rc.setSendZuulResponse(false);
-            rc.setResponseStatusCode(404);
+            rc.setResponseStatusCode(401);
             try {
                 rc.getResponse().getWriter().write("The toke is null");
             } catch (IOException e) {
