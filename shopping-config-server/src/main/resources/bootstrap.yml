@@ -1,0 +1,26 @@
+server:
+  port: 8888
+
+spring:
+ application:
+     name: shopping-config-server
+ cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/HiLany/Configs.git # 配置git仓库地址
+          search-paths: configs # 配置仓库路径
+      label: master
+#          force-pull: true
+#          username:  # 访问git仓库的用户名
+#          password:  # 访问git仓库的密码
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: shopping-config-server
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
