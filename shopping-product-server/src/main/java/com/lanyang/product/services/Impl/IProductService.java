@@ -3,6 +3,7 @@ package com.lanyang.product.services.Impl;
 import com.lanyang.product.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Service;
 public class IProductService implements ProductService{
 
     private Logger logger = LoggerFactory.getLogger(IProductService.class);
+
+    @Value("${deliver.messages:no messages}")
+    private String messages;
+
 
     @Override
     public Boolean SearchStorageByProduct(String productName)  throws InterruptedException{
@@ -36,7 +41,7 @@ public class IProductService implements ProductService{
     @Override
     public String SearchDetailByProduct(String productName) throws InterruptedException{
         Thread.sleep(2000L);
-        return "ProductName :"+productName + " Category: Fruit , Description: 'so delicious!'";
+        return "ProductName :"+productName + " Category: Fruit , Description: 'so delicious!'\n"+messages;
     }
 
     /**

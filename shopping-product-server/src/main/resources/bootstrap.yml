@@ -1,1 +1,42 @@
 spring:
+  application:
+    name: shopping-product-server # you need add this properties if you want to ues spring.config.name
+#  config:
+#    name: shopping-product-server # configuration spring cloud config centerspring:spring:
+  cloud:
+    config:
+#      uri: http://localhost:8888/
+      label: master
+      profile: dev
+      enabled: true
+      discovery:
+        enabled: true
+        service-id: shopping-config-server
+#  security:
+#    user:
+#      name: admin
+#      password: 123456
+#      roles: TEST_ROLES
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: shopping-product-server
+    prefer-ip-address: true
+
+server:
+  port: 8764
+
+#management:
+#    shutdown:
+#      enabled: true # 更流畅的关闭应用
+#    endpoints:
+#      web:
+#        exposure:
+#          include: "*"
+#
+
