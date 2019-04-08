@@ -1,0 +1,164 @@
+<!doctype html>
+<!--<html lang="en">-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+    <title>Hello, world!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"  href="../css/bootstrap.min.css"   th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet"  href="../css/fileinput.min.css"   th:href="@{/css/fileinput.min.css}">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="../js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script src="../js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="../js/fileinput.min.js" th:src="@{/js/fileinput.min.js}"></script>
+    <script src="../js/fileinput-zh.js" th:src="@{/js/fileinput-zh.js}"></script>
+    <script src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+    <!-- Content here -->
+    <h1>File Server</h1>
+
+
+    <!--<input id="inputFile" name="inputFile" type="file" class="file" data-show-preview="true">-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Chose Image
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="file-loading">
+                        <input id="inputFile" name="inputFile" multiple type="file">
+                    </div>
+                    <div id="kartik-file-errors"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" title="Your custom upload logic" onclick="loadPage()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr/>
+
+    <table class="table" th:border="1">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">UploadDate</th>
+                <th scope="col">ContentType</th>
+                <th scope="col">Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="file : ${files}" >
+
+                <td><a th:href="@{'http://localhost:8099/files/'+${file.id}}" th:text="${file.id}"/></td>
+                <td th:text="${file.name}"/>
+                <td th:text="${file.uploadDate}"/>
+                <td th:text="${file.contentType}"/>
+                <td >
+                    <a class="btn btn-primary" th:href="${file.path}" target="_blank" role="button">Preview</a>
+                    <button th:id="${file.id}" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteFile(this.id)">Delete</button>
+                    <!--<button  class="btn btn-primary"  th:href="@{'http://localhost:8099/files/'+ ${file.id}}" target="_blank" role="button" >Download</button>-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="pagination pagination-lg" >
+        <li th:class="${totalPage==0 || indexPage <= 0}?'disabled' : ' '"><a th:href="@{'http://localhost:8099/page/' + ${indexPage-1}}">上一页</a></li>
+        <li th:if="${indexPage-3 >=1}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage-3}}" th:text="${indexPage -3}" >1</a></li>
+        <li th:if="${indexPage-2 >=1}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage-2}}" th:text="${indexPage -2}" >1</a></li>
+        <li th:if="${indexPage-1 >=1}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage-1}}" th:text="${indexPage -1}" >1</a></li>
+        <li class="active"><a href="#" th:text="${indexPage}" >1</a></li>
+        <li th:if="${indexPage+1 <=totalPage}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage+1}}" th:text="${indexPage +1}" >1</a></li>
+        <li th:if="${indexPage+2 <=totalPage}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage+2}}" th:text="${indexPage +2}" >1</a></li>
+        <li th:if="${indexPage+3 <=totalPage}" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage+3}}" th:text="${indexPage +3}" >1</a></li>
+
+        <li th:class="${indexPage >= totalPage}?'disabled' : ''" ><a th:href="@{'http://localhost:8099/page/' + ${indexPage+1}}">下一页</a></li>
+    </ul><br>
+
+</div>
+
+<script th:inline="javascript">
+    $("#inputFile").fileinput({
+        language: 'zh', //设置语言
+        uploadUrl:"http://127.0.0.1:8099/uploadFile", //上传的地址
+        allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+        //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+        uploadAsync: true, //默认异步上传
+        showUpload:true, //是否显示上传按钮
+        showRemove :true, //显示移除按钮
+        showPreview :true, //是否显示预览
+        showCaption:false,//是否显示标题
+        browseClass:"btn btn-primary", //按钮样式
+        dropZoneEnabled: false,//是否显示拖拽区域
+        //minImageWidth: 50, //图片的最小宽度
+        //minImageHeight: 50,//图片的最小高度
+        //maxImageWidth: 1000,//图片的最大宽度
+        //maxImageHeight: 1000,//图片的最大高度
+        //maxFileSize:0,//单位为kb，如果为0表示不限制文件大小
+        //minFileCount: 0,
+        maxFileCount:10, //表示允许同时上传的最大文件个数
+        enctype:'multipart/form-data',
+        validateInitialCount:true,
+        previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+        msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+    }).on("fileuploaded", function (event, data){
+        console.log(data.response.file_return);
+    });
+
+
+
+
+
+
+    //delete file
+    function deleteFile(parm){
+        $.ajax({
+            url: "/deleteFile/"+parm,
+            type: 'DELETE',
+            success: function(result) {
+                if("delete success" == result){
+                    location.reload();
+                }
+
+            }
+        });
+    }
+
+    //flush page
+    function loadPage(){
+        location.reload();
+    }
+
+</script>
+
+</body>
+</html>

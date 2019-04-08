@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: shopping-product-file
+#  profiles:
+#    active: dev
+  thymeleaf:
+      cache: false
+      check-template-location: true
+#      content-type: text/html
+      enabled: true
+      encoding: utf-8
+      mode: HTML5
+  devtools:
+      restart:
+        enabled: true
+  cloud:
+    bus:
+      trace:
+        enabled: true
+      enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  data:
+    mongodb:
+      database: shopping
+      username: "lanyang"
+      password: "123456"
+      authentication-database: admin
+      host: localhost
+      port: 27017
+  servlet:
+    multipart:
+      max-file-size: 10MB # 限制上传的文件大小
+      max-request-size: 10MB
+
+management:
+    shutdown:
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+
