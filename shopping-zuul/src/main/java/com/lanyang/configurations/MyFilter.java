@@ -14,7 +14,7 @@ import java.io.IOException;
  * 加上过滤器，用来进行安全验证。
  * Created by lany on 2018/11/13.
  */
-@Component
+//@Component
 public class MyFilter extends ZuulFilter {
 
     private Logger logger = LoggerFactory.getLogger(MyFilter.class);
@@ -51,7 +51,7 @@ public class MyFilter extends ZuulFilter {
     }
 
     /**
-     * run：过滤器的具体逻辑。可用很复杂，包括查sql，nosql去判断该请求到底有没有权限访问。
+     * run：过滤器的具体逻辑。可以很复杂，包括查sql，nosql去判断该请求到底有没有权限访问。
      * @return
      * @throws ZuulException
      */

@@ -15,11 +15,11 @@ spring:
       discovery:
         enabled: true
         service-id: shopping-config-server
-#  security:
-#    user:
-#      name: admin
-#      password: 123456
-#      roles: TEST_ROLES
+  security:
+    user:
+      name: admin
+      password: 123456
+      roles: TEST_ROLES
 
 eureka:
   client:
@@ -31,8 +31,6 @@ eureka:
     hostname: shopping-product-server
     prefer-ip-address: true
 
-server:
-  port: 8764
 
 #management:
 #    shutdown:

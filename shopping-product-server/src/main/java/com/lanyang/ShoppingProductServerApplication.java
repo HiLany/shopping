@@ -27,3 +27,4 @@ public class ShoppingProductServerApplication {
 		SpringApplication.run(ShoppingProductServerApplication.class, args);
 	}
 }
+

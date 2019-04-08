@@ -1,6 +1,6 @@
 server:
   port: 8888
-
+#
 spring:
  application:
      name: shopping-config-server
@@ -14,7 +14,7 @@ spring:
 #          force-pull: true
 #          username:  # 访问git仓库的用户名
 #          password:  # 访问git仓库的密码
-
+#
 eureka:
   instance:
     prefer-ip-address: true

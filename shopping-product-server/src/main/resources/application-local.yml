@@ -1,0 +1,31 @@
+deliver:
+    messages: 'hello, this properties from local'
+
+spring:
+  cloud:
+    bus:
+      trace:
+        enabled: true
+      enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    url: jdbc:mysql://localhost:3306/shopping
+    username: root
+    password: 123456
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+management:
+    shutdown:
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      web:
+        exposure:
+          include: "*"

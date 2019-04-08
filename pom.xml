@@ -11,6 +11,7 @@
 
 
     <modules>
+        <module>shopping-common</module>
         <module>shopping-eureka-server</module>
         <module>shopping-product-description</module>
         <module>shopping-product-server</module>

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by lany on 2018/11/14.
  */
-@Configuration
+//@Configuration
 public class PatternServiceRouterConfigs {
 
     /**
