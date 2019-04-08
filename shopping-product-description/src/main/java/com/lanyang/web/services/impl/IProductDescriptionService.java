@@ -32,4 +32,5 @@ public class IProductDescriptionService implements ProductDescriptionService{
         logger.info("SearchByDescription : {}" ,name);
         return productServerFeignClient.SearchDetailByProduct(name);
     }
+
 }
