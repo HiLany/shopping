@@ -17,4 +17,7 @@ public interface ProductServerFeignClient {
     @RequestMapping(value = "/product/SearchStorageByProduct",method = RequestMethod.GET)
     Boolean SearchStorageByProduct(@RequestParam("productName")String productName);
 
+    @RequestMapping(value = "/product/checkInventoryByProductCode",method = RequestMethod.GET)
+    long checkInventoryByProductCode(String productCode);
+
 }

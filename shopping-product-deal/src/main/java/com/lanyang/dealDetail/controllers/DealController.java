@@ -1,6 +1,6 @@
-package com.lanyang.deal.controllers;
+package com.lanyang.dealDetail.controllers;
 
-import com.lanyang.deal.services.DealService;
+import com.lanyang.dealDetail.services.DealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

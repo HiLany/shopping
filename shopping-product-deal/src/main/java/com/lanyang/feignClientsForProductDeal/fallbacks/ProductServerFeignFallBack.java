@@ -16,8 +16,13 @@ public class ProductServerFeignFallBack implements ProductServerFeignClient {
 
     @Override
     public Boolean SearchStorageByProduct(String productName) {
-        logger.info("Remote Server is busy");
+        logger.info("Product Server is busy");
         return false;
     }
 
+    @Override
+    public long checkInventoryByProductCode(String productCode) {
+        logger.info("Product Server is busy");
+        return 0;
+    }
 }
