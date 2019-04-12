@@ -162,21 +162,22 @@ public class IProductService implements ProductService{
 
     @Override
     public Page<Product> findProductByCondition(Integer page, Integer size, Product product) {
-        logger.info(product.toString());
         //根据entity中的属性名称，而不是表中的字段名称进行排序
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"productCode");
         Page<Product> productPage = productRepository.findAll(new Specification<Product>() {
             @Override
             public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> list = new ArrayList<Predicate>();
-                if(null!=product.getProductCode()&&!"".equals(product.getProductCode())){
-                    list.add(criteriaBuilder.equal(root.get("productCode").as(String.class),product.getProductCode()));
-                }
-                if(null!=product.getProductName()&&!"".equals(product.getProductName())){
-                    list.add(criteriaBuilder.equal(root.get("productName").as(String.class),product.getProductName()));
-                }
-                if(product.getProductType() != 0){
-                    list.add(criteriaBuilder.equal(root.get("productType").as(Integer.class),product.getProductType()));
+                if(null != product){
+                    if(null != product.getProductCode()&&!"".equals(product.getProductCode())){
+                        list.add(criteriaBuilder.equal(root.get("productCode").as(String.class),product.getProductCode()));
+                    }
+                    if(null!= product.getProductName()&&!"".equals(product.getProductName())){
+                        list.add(criteriaBuilder.like(root.get("productName").as(String.class),product.getProductName()));
+                    }
+                    if(product.getProductType() != 0){
+                        list.add(criteriaBuilder.equal(root.get("productType").as(Integer.class),product.getProductType()));
+                    }
                 }
                 Predicate[] p = new Predicate[list.size()];
                 return criteriaBuilder.and(list.toArray(p));

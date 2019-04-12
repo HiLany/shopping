@@ -6,7 +6,7 @@ import com.lanyang.product.domain.entity.Product;
 import com.lanyang.product.services.ProductService;
 
 
-import com.sun.xml.internal.bind.v2.TODO;
+import com.shopping.core.dto.PageQueryDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -22,6 +22,7 @@ import java.util.List;
 /**
  * Created by lany on 2018/11/7.
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController()
 @Api(value = "产品服务接口")
 @RequestMapping("/product")
@@ -113,16 +114,14 @@ public class PorductController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="page",paramType = "query",value = "页数",required = true, dataType = "int"),
             @ApiImplicitParam(name="size",paramType = "query",value = "分页",required = true, dataType = "int"),
-            @ApiImplicitParam(name="product",paramType = "body",value = "产品查询条件",required = true, dataType = "Product")
+            @ApiImplicitParam(name="pageQueryDto",paramType = "body",value = "产品查询条件",required = true, dataType = "PageQueryDto")
     })
     @RequestMapping(value = "/findProductByCondition",method = RequestMethod.GET)
-    public Page<Product> findProductByCondition(@RequestParam(value = "page",defaultValue = "0") Integer page, @RequestParam(value = "size",defaultValue = "5") Integer size,Product product){
-        // TODO: 2019/4/2 需要解决不能收到传递的product参数
-        logger.info(product.toString());
-        if(page > 0){
-            page -= 1;
-        }
-        return productService.findProductByCondition(page,size,product);
+    public Page<Product> findProductByCondition(@RequestParam(value = "page",defaultValue = "0") Integer page, @RequestParam(value = "size",defaultValue = "5") Integer size, PageQueryDto<Product> pageQueryDto){
+        logger.info(pageQueryDto.toString());
+        page = ((page == 0 || page==1)? 0 : page-1);
+        pageQueryDto.analysisCondition(Product.class);
+        return productService.findProductByCondition(page,size,null);
     }
 
 
