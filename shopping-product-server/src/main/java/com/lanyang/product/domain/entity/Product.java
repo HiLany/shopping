@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,7 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "t_product")
 @NamedQuery(name="Product.findAll",query = "select p from Product p")
-public class Product {
+public class Product implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "myGen")
@@ -38,11 +41,19 @@ public class Product {
     @Column(name = "price")
     private float price;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "last_update_time")
-    private LocalDateTime lastUpdateTime;
+    private String lastUpdateTime;
 
     public Product(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getProductCode() {
         return productCode;
@@ -92,11 +103,11 @@ public class Product {
         this.price = price;
     }
 
-    public LocalDateTime getLastUpdateTime() {
+    public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+    public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 

@@ -22,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product,String>,JpaSpec
 
     Product findByProductCode(String productCode);
 
+//    Product findById(String id);
+
 }

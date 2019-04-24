@@ -12,8 +12,8 @@ public class Constants {
     public static final int FOREIGN = 2;
 
     //升序
-    public static final String ORDER_ASC = "ASC";
+    public static final String ORDER_ASC = "ASCEND";
 
     //降序
-    public static final String ORDER_DESC = "DESC";
+    public static final String ORDER_DESC = "DESCEND";
 }

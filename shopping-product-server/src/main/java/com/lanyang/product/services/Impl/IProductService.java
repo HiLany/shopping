@@ -9,6 +9,9 @@ import com.lanyang.product.repositories.ProductRepository;
 import com.lanyang.product.services.ProductService;
 
 
+import com.shopping.core.dto.PageQueryDto;
+import com.shopping.utils.TimeUtils;
+import com.shopping.utils.TransUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +23,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -99,24 +106,29 @@ public class IProductService implements ProductService{
             logger.info("Product is Invalid");
             return null;
         }
+        product.setLastUpdateTime(TimeUtils.getCurrentTime());
         return productRepository.saveAndFlush(product);
     }
 
+    //https://stackoverflow.com/questions/49316751/spring-data-jpa-findone-change-to-optional-how-to-use-this/49317013
     @Override
-    public Boolean deleteProduct(Product product) {
+    public Product findOne(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
+    }
 
-        if(product.getProductCode().equals("") || product.getProductCode() == null){
-            logger.info("The product's id is not provided");
-            return false;
-        }
-        Product product_temp = productRepository.findByProductCode(product.getProductCode());
-        if(product_temp == null){
+    @Override
+    public Boolean deleteProduct(String id) {
+        Product product_temp = productRepository.getOne(id);
+        if(null == product_temp){
             logger.info("Product is not exists");
             return false;
         }
         productRepository.delete(product_temp);
         return true;
     }
+
+
 
     @Override
     public long checkInventoryByProductCode(String productCode) {
@@ -161,6 +173,47 @@ public class IProductService implements ProductService{
     }
 
     @Override
+    public Page<Product> findProductByCondition(PageQueryDto<Product> pageQueryDto) throws Exception{
+        Pageable pageable;
+        int page = (pageQueryDto.getCurrent()==0 ||pageQueryDto.getCurrent() ==1)?0:(pageQueryDto.getCurrent()-1);
+        Sort.Direction order = Constants.ORDER_ASC.equalsIgnoreCase(pageQueryDto.getSortOrder())? Sort.Direction.ASC: Sort.Direction.DESC;
+        if("".equals(pageQueryDto.getSortOrder()) || "".equals(pageQueryDto.getSortField())){
+            pageable = new PageRequest(page,pageQueryDto.getPageSize());
+        }else
+            pageable = new PageRequest(page,pageQueryDto.getPageSize(),order,pageQueryDto.getSortField());
+        Page<Product>  productPage = productRepository.findAll(new Specification<Product>() {
+            @Override
+            public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> list = new ArrayList<Predicate>();
+                Product product = pageQueryDto.analysisCondition(Product.class);
+                if(null != product){
+                    if(null != product.getProductCode()&&!"".equals(product.getProductCode())){
+                        list.add(criteriaBuilder.equal(root.get("productCode").as(String.class),product.getProductCode()));
+                    }
+                    if(null!= product.getProductName()&&!"".equals(product.getProductName())){
+                        list.add(criteriaBuilder.like(root.get("productName").as(String.class),'%'+product.getProductName()+'%'));
+                    }
+                    if(product.getProductType() != 0){
+                        list.add(criteriaBuilder.equal(root.get("productType").as(Integer.class),product.getProductType()));
+                    }
+                    if(null != product.getLastUpdateTime() && !"".equals(product.getLastUpdateTime())){
+                        String[] time = TransUtils.strToArray(product.getLastUpdateTime());
+                        if(time.length > 0){
+                            list.add(criteriaBuilder.between(root.get("lastUpdateTime").as(String.class),
+                                    TimeUtils.transTime(time[0]),
+                                    TimeUtils.transTime(time[1])));
+                        }
+                    }
+                }
+                Predicate[] p = new Predicate[list.size()];
+                return criteriaBuilder.and(list.toArray(p));
+            }
+        },pageable);
+        return productPage;
+
+    }
+
+    @Override
     public Page<Product> findProductByCondition(Integer page, Integer size, Product product) {
         //根据entity中的属性名称，而不是表中的字段名称进行排序
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"productCode");
@@ -168,7 +221,7 @@ public class IProductService implements ProductService{
             @Override
             public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> list = new ArrayList<Predicate>();
-                if(null != product){
+/*                if(null != product){
                     if(null != product.getProductCode()&&!"".equals(product.getProductCode())){
                         list.add(criteriaBuilder.equal(root.get("productCode").as(String.class),product.getProductCode()));
                     }
@@ -178,7 +231,7 @@ public class IProductService implements ProductService{
                     if(product.getProductType() != 0){
                         list.add(criteriaBuilder.equal(root.get("productType").as(Integer.class),product.getProductType()));
                     }
-                }
+                }*/
                 Predicate[] p = new Predicate[list.size()];
                 return criteriaBuilder.and(list.toArray(p));
             }

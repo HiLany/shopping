@@ -77,12 +77,19 @@ public class PorductController {
         return productService.checkInventoryByProductCode(productCode);
     }
 
+    @ApiOperation(value = "根据id查询产品",notes = "根据id查询产品Restful接口")
+    @ApiImplicitParam(name="id",value = "产品id",required = true,dataType = "String")
+    @GetMapping("/find/{id}")
+    public Product findProduct(@PathVariable String id){
+        return productService.findOne(id);
+    }
+
     @ApiOperation(value = "添加产品信息",notes = "添加产品Restful接口")
     @ApiImplicitParam(name="product",value = "产品信息",required = true,dataType = "Product")
-    @PostMapping("/addProduct")
+    @PostMapping("/add")
     public Product addProduct(@RequestBody Product product){
 
-
+        System.out.println(product);
         if(!checkProduct(product)){
             return null;
         }
@@ -91,7 +98,7 @@ public class PorductController {
 
     @ApiOperation(value = "更新产品信息",notes = "更新产品Restful接口")
     @ApiImplicitParam(name="product",value = "产品信息",required = true,dataType = "Product")
-    @PutMapping("/updateProduct")
+    @PutMapping("/update")
     public Product updateProduct(@RequestBody Product product){
         if(!checkProduct(product)){
             return null;
@@ -99,29 +106,29 @@ public class PorductController {
         return productService.saveAndUpdateProduct(product);
     }
 
-
     @ApiOperation(value = "删除产品信息",notes = "删除产品Restful接口")
-    @ApiImplicitParam(name="product",value = "产品信息",required = true,dataType = "Product")
-    @DeleteMapping("/deleteProduct")
-    public boolean deleteProduct(@RequestBody Product product){
-        if(!checkProduct(product)){
-            return false;
-        }
-        return productService.deleteProduct(product);
+    @ApiImplicitParam(name="id",value = "产品id",required = true,dataType = "String")
+    @DeleteMapping("/delete/{id}")
+    public boolean deleteProduct(@PathVariable String id){
+        return productService.deleteProduct(id);
     }
 
     @ApiOperation(value = "根据条件查询产品信息",notes = "查询产品Restful接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="page",paramType = "query",value = "页数",required = true, dataType = "int"),
-            @ApiImplicitParam(name="size",paramType = "query",value = "分页",required = true, dataType = "int"),
             @ApiImplicitParam(name="pageQueryDto",paramType = "body",value = "产品查询条件",required = true, dataType = "PageQueryDto")
     })
     @RequestMapping(value = "/findProductByCondition",method = RequestMethod.GET)
-    public Page<Product> findProductByCondition(@RequestParam(value = "page",defaultValue = "0") Integer page, @RequestParam(value = "size",defaultValue = "5") Integer size, PageQueryDto<Product> pageQueryDto){
+    public Page<Product> findProductByCondition(PageQueryDto<Product> pageQueryDto){
         logger.info(pageQueryDto.toString());
-        page = ((page == 0 || page==1)? 0 : page-1);
-        pageQueryDto.analysisCondition(Product.class);
-        return productService.findProductByCondition(page,size,null);
+        Page<Product> productPage = null;
+        try {
+
+            productPage = productService.findProductByCondition(pageQueryDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return productPage;
+        }
     }
 
 

@@ -5,6 +5,7 @@ package com.lanyang.product.services;
 
 
 import com.lanyang.product.domain.entity.Product;
+import com.shopping.core.dto.PageQueryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,14 @@ public interface ProductService {
     List<Product> sortListByCondition();
 
     /**
+     * 根据id查询产品
+     * @param id
+     * @return
+     */
+    @Transactional(readOnly = true)
+    Product findOne(String id);
+
+    /**
      * 添加或者更新产品
      * @param product
      * @return
@@ -53,11 +62,11 @@ public interface ProductService {
 
     /**
      * 删除产品
-     * @param product
+     * @param id
      * @return
      */
     @Transactional
-    Boolean deleteProduct(Product product);
+    Boolean deleteProduct(String id);
 
     /**
      * 根据产品编码查看产品的库存
@@ -79,10 +88,14 @@ public interface ProductService {
 
     Page<Product> findProductNoCriteria(Integer page, Integer size, String sortType, String sortOrder);
 
-    @Transactional(readOnly = true)
-    Page<Product> findProductByCondition(Integer page,Integer size,Product product);
-
 
     @Transactional(readOnly = true)
     Page<Product> findProductCriteria(Integer page,Integer size,Product product);
+
+    @Transactional(readOnly = true)
+    Page<Product> findProductByCondition(Integer page,Integer size,Product product);
+
+    @Transactional(readOnly = true)
+    Page<Product> findProductByCondition(PageQueryDto<Product> pageQueryDto) throws Exception;
+
 }

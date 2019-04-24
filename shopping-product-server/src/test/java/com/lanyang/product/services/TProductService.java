@@ -29,7 +29,7 @@ public class TProductService {
         product.setProductCode("1010");
         product.setProductName("ChongQing");
         product.setInventory(5000);
-        product.setLastUpdateTime(LocalDateTime.now());
+        product.setLastUpdateTime(LocalDateTime.now().toString());
         product.setPicAddr("");
         product.setPrice(5000);
 
@@ -38,12 +38,17 @@ public class TProductService {
 
     }
 
-    @Test
+//    @Test
     public void testSearchByCondition(){
         Product product = new Product();
         product.setProductCode("1001");
         Page<Product> products = productService.findProductCriteria(1,5,product);
         System.out.println(products);
+    }
+
+//    @Test
+    public void testSearch(){
+        System.out.println(productService.findOne("f7e69dca-8725-4e8e-b3ea-4227d4515653"));
     }
 
 
