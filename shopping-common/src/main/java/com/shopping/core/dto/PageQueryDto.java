@@ -3,13 +3,11 @@ package com.shopping.core.dto;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 
 import com.google.common.base.Strings;
 import com.shopping.core.product.domain.dto.ProductDTO;
 import io.swagger.annotations.ApiModel;
-import jdk.nashorn.internal.parser.JSONParser;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 
@@ -23,7 +21,7 @@ public class PageQueryDto<T> implements Serializable {
 
     private static final long serialVersionUID = -2792028968202290118L;
 
-    private Integer pageIndex;
+    private Integer current;
     private Integer pageSize;
     private String sortField;
     private String sortOrder;
@@ -33,12 +31,12 @@ public class PageQueryDto<T> implements Serializable {
         return serialVersionUID;
     }
 
-    public Integer getPageIndex() {
-        return pageIndex;
+    public Integer getCurrent() {
+        return current;
     }
 
-    public void setPageIndex(Integer pageIndex) {
-        this.pageIndex = pageIndex;
+    public void setCurrent(Integer current) {
+        this.current = current;
     }
 
     public Integer getPageSize() {
@@ -76,24 +74,28 @@ public class PageQueryDto<T> implements Serializable {
     public <T> T analysisCondition(Class clazz){
         T object = null;
         try {
-            object = (T)clazz.newInstance();
             if(Strings.isNullOrEmpty(this.condition)){
                 return object;
             }
+            object = (T)clazz.newInstance();
             Field[] fields = clazz.getDeclaredFields();
-
-            JSONArray json = JSONArray.fromObject(this.condition);
-            for(int i=0,len=json.size();i<len;i++){
-                JSONObject obj = json.getJSONObject(i);
-                for(Field field:fields){
-                    if(null != obj.get(field.getName())){
-                        Method method = clazz.getDeclaredMethod("set"+ StringUtils.capitalize(field.getName()),field.getType());
-                        method.invoke(object,obj.get(field.getName()));
+//            JSONArray json = JSONArray.fromObject(this.condition);
+            JSONObject obj = JSONObject.fromObject(this.condition);
+            for(Field field:fields){
+                if(null != obj.get(field.getName())){
+                    Method method = clazz.getDeclaredMethod("set"+ StringUtils.capitalize(field.getName()),field.getType());
+                    if (int.class.isAssignableFrom(field.getType())){
+                        method.invoke(object,Integer.parseInt((String) obj.get(field.getName())));
+                    }else if(long.class.isAssignableFrom(field.getType())){
+                        method.invoke(object,Long.parseLong((String) obj.get(field.getName())));
+                    }else if(Date.class.isAssignableFrom(field.getType())){
+                        method.invoke(object,(Date)obj.get(field.getName()));
+                    }else if(byte[].class.isAssignableFrom(field.getType())){
+                        method.invoke(object,(byte[])obj.get(field.getName()));
                     }
+                        method.invoke(object,obj.get(field.getName()).toString());
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,7 +105,7 @@ public class PageQueryDto<T> implements Serializable {
     @Override
     public String toString() {
         return "PageQueryDto{" +
-                "pageIndex=" + pageIndex +
+                "pageIndex=" + current +
                 ", pageSize=" + pageSize +
                 ", sortField='" + sortField + '\'' +
                 ", sortOrder='" + sortOrder + '\'' +
