@@ -72,13 +72,11 @@ public class IDealService implements DealService{
         if(dealDetail.getDetailCode().equals("") || dealDetail.getDetailCode() == null ){
             return false;
         }
-
         DealDetail dealDetail_temp = dealDetailRepository.findByDetailCode(dealDetail.getDetailCode());
 
         if(dealDetail_temp == null){
             return false;
         }
-
         dealDetailRepository.delete(dealDetail_temp);
         return true;
     }

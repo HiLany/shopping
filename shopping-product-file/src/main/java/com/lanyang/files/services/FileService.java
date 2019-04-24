@@ -1,6 +1,8 @@
 package com.lanyang.files.services;
 
 import com.lanyang.files.domains.File;
+import com.shopping.core.dto.PageDto;
+import com.shopping.core.dto.PageQueryDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -20,5 +22,5 @@ public interface FileService {
 
     Page<File> listFilePagesByPage(int page,int size);
 
-
+    PageDto<File> findFileByPage(PageQueryDto<File> pageQueryDto) throws Exception;
 }

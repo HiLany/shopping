@@ -3,6 +3,7 @@ package com.lanyang.files.domains;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -127,14 +128,14 @@ public class File {
 
     @Override
     public String toString() {
-        return "File{"
-                + "name='" + name + '\''
-                + ", contentType='" + contentType + '\''
-                + ", size=" + size
-                + ", uploadDate=" + uploadDate
-                + ", md5='" + md5 + '\''
-                + ", id='" + id + '\''
-                + '}';
+        return "File{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", size=" + size +
+                ", md5='" + md5 + '\'' +
+                ", uploadDate=" + uploadDate +
+                ", path='" + path + '\'' +
+                '}';
     }
-
 }

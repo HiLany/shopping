@@ -2,6 +2,8 @@ package com.lanyang.files.controlles;
 
 import com.lanyang.files.domains.File;
 import com.lanyang.files.services.FileService;
+import com.shopping.core.dto.PageDto;
+import com.shopping.core.dto.PageQueryDto;
 import com.shopping.utils.MD5Util;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,19 @@ public class FileController {
         model.addAttribute("totalPage",filePages.getTotalPages());
         model.addAttribute("totalSize",filePages.getTotalElements());
         return "index";
+    }
+
+    //https://answers.nuxeo.com/general/q/fb084b7279fe482a95133ea3766304fd/Mongo-DB-sort-operation-gives-error-Sort-operation-used-more-than-the-maximum-33554432-bytes-of-RAM-Add-an-index-or-specify-a-smaller-limit
+    @GetMapping(value = "/page")
+    @ResponseBody
+    public PageDto<File> pageQuery(PageQueryDto<File> pageQueryDto){
+        PageDto<File> filePageDto = null;
+        try {
+            return filePageDto = fileService.findFileByPage(pageQueryDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return filePageDto;
+        }
     }
 
     @GetMapping(value = "/view/{id}")
@@ -135,10 +150,8 @@ public class FileController {
             file_return = fileService.saveFile(f);//save file
             String path = "http://"+ serverAddress +":"+ serverPort + "/view/" + file_return.getId();
             file_return.setPath(path);
-            fileService.saveFile(f);//update file's path
-            JSONObject obj_return = new JSONObject();
-            obj_return.put("file_return",file_return);
-            return ResponseEntity.ok(obj_return.toString());
+            file_return = fileService.saveFile(f);//update file's path
+            return ResponseEntity.ok(file_return.getPath());
 
         } catch (Exception  e) {
             e.printStackTrace();
@@ -148,13 +161,13 @@ public class FileController {
 
     @DeleteMapping(value = "/deleteFile/{id}")
     @ResponseBody
-    public ResponseEntity<Object> deleteFile(@PathVariable String id){
+    public boolean deleteFile(@PathVariable String id){
         try {
             fileService.removeFile(id);
-            return ResponseEntity.ok("delete success");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return false;
         }
     }
 
