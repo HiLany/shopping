@@ -19,6 +19,7 @@
         <module>shopping-turbine</module>
         <module>shopping-zuul</module>
         <module>shopping-config-server</module>
+        <module>shopping-product-file</module>
     </modules>
 
 

@@ -2,6 +2,11 @@ server:
   port: 8888
 #
 spring:
+ rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
  application:
      name: shopping-config-server
  cloud:
@@ -15,6 +20,7 @@ spring:
 #          username:  # 访问git仓库的用户名
 #          password:  # 访问git仓库的密码
 #
+
 eureka:
   instance:
     prefer-ip-address: true
@@ -24,3 +30,18 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+    security:
+      enabled: false
+    shutdown:
+      enabled: true # 更流畅的关闭应用
+    endpoints:
+      health:
+        show-details: "ALWAYS"
+      web:
+        exposure:
+          include: "*"
+      jmx:
+        exposure:
+          include: "*"

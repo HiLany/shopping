@@ -13,30 +13,31 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-//    @Override
-//    public void configure(HttpSecurity httpSecurity) throws Exception {
-////        httpSecurity.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
-////                .anyRequest().permitAll();
-////        httpSecurity.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
-////                .anyRequest().hasRole("TEST_ROLES")
-////                .and()
-////                .httpBasic();
-//        /**
-//         * 如果访问http://localhost:8764/actuator/bus-refresh 出现403错误，就将安全验证给关掉
-//         *
-//         * resolve method : https://github.com/spring-cloud/spring-cloud-config/issues/950#issuecomment-377180581
-//         */
-////        httpSecurity.csrf().disable();
-//    }
-
-
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
-                .anyRequest().hasRole("TEST_ROLES")
-                .and()
-                .httpBasic();
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
+//                .anyRequest().permitAll();
+//        httpSecurity.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
+//                .anyRequest().hasRole("TEST_ROLES")
+//                .and()
+//                .httpBasic();
+        /**
+         * 如果访问http://localhost:8764/actuator/bus-refresh 出现403错误，就将安全验证给关掉
+         *
+         * resolve method : https://github.com/spring-cloud/spring-cloud-config/issues/950#issuecomment-377180581
+         */
+        httpSecurity.csrf().disable();
     }
+
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
+//                .anyRequest().hasRole("TEST_ROLES")
+//                .and()
+//                .httpBasic();
+////        http.csrf().disable();
+//    }
 
 
 
