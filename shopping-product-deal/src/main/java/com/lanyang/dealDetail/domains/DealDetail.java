@@ -36,7 +36,7 @@ public class DealDetail {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "Asia/Shanghai")
     @Column(name = "last_update_time")
-    private LocalDateTime lastUpdateTime;
+    private String lastUpdateTime;
 
     public DealDetail() {
     }
@@ -73,11 +73,11 @@ public class DealDetail {
         this.dealList = dealList;
     }
 
-    public LocalDateTime getLastUpdateTime() {
+    public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+    public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 

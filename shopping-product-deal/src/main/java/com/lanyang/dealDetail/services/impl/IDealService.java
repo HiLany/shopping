@@ -44,11 +44,11 @@ public class IDealService implements DealService{
      */
     @Override
     public DealDetail addDealDetail(DealDetail dealDetail) {
-        long product_num = productServerFeignClient.checkInventoryByProductCode(dealDetail.getProductCode());
+        /*long product_num = productServerFeignClient.checkInventoryByProductCode(dealDetail.getProductCode());
         if(product_num <= 0){//judge inventory of product
             logger.error("The product's inventory is not satisfy!");
             return null;
-        }
+        }*/
         return dealDetailRepository.save(dealDetail);
     }
 
